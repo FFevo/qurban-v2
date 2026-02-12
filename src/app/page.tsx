@@ -5,7 +5,7 @@ import Influencers from "@/components/Influencers";
 import Service from "@/components/Service";
 import ProofVideo from "@/components/ProofVideo";
 import Reviews from "@/components/Reviews";
-import PainPoints from "@/components/PainPoints";
+import PainPoints from "@/components/PainPointsC";
 import Beneficiaires from "@/components/Beneficiaires";
 import Team from "@/components/Team";
 import Founder from "@/components/Founder";
