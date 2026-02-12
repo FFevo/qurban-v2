@@ -510,8 +510,8 @@ export default function OffrandesClient() {
                 }`}
               >
                 {offer.title}
-                {/* Stock dot */}
-                {offer.stockLeft <= 10 && (
+                {/* Stock dot — only on Aid */}
+                {offer.popular && (
                   <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
                 )}
               </button>
