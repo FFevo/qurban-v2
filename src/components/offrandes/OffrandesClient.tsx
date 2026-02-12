@@ -260,10 +260,10 @@ export default function OffrandesClient() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="mt-6 inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-4 py-2"
+              className="mt-6 inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-2"
             >
-              <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
-              <span className="text-red-400 text-xs font-heading tracking-wide">
+              <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
+              <span className="text-amber-400 text-xs font-heading tracking-wide">
                 STOCKS LIMITES AU {todayLabel.toUpperCase()}
               </span>
             </motion.div>
@@ -308,17 +308,17 @@ export default function OffrandesClient() {
                       <Badge
                         className={`font-heading text-[10px] tracking-wider px-2.5 py-1 ${
                           offer.inStock
-                            ? "bg-qurban-green/90 text-white"
-                            : "bg-red-600/90 text-white"
+                            ? "bg-amber-500/90 text-white"
+                            : "bg-neutral-600/90 text-white"
                         }`}
                       >
-                        {offer.inStock ? "En stock" : "Hors stock"}
+                        {offer.inStock ? "Stock limite" : "Hors stock"}
                       </Badge>
-                      {/* Stock limité badge */}
+                      {/* Restants badge */}
                       {offer.inStock && offer.stockLeft <= 15 && (
-                        <Badge className="bg-red-500/90 text-white font-heading text-[10px] tracking-wider px-2.5 py-1 flex items-center gap-1 animate-pulse">
+                        <Badge className="bg-amber-600/90 text-white font-heading text-[10px] tracking-wider px-2.5 py-1 flex items-center gap-1 animate-pulse">
                           <FlameIcon className="h-3 w-3" />
-                          Plus que {offer.stockLeft} restants
+                          Plus que {offer.stockLeft}
                         </Badge>
                       )}
                     </div>
@@ -380,10 +380,10 @@ export default function OffrandesClient() {
                           className={`rounded-full font-heading text-xs h-10 px-6 transition-all ${
                             offer.popular
                               ? "bg-gold hover:bg-gold/90 text-bg-dark shadow-lg shadow-gold/20 cta-shine"
-                              : "bg-qurban-green hover:bg-qurban-green/90 text-white cta-shine"
+                              : "bg-white/[0.06] border border-white/[0.12] hover:bg-white/[0.1] text-text-light"
                           }`}
                         >
-                          RESERVER
+                          {offer.popular ? "RESERVER MAINTENANT" : "CHOISIR"}
                         </Button>
                       </div>
                     </div>
@@ -512,7 +512,7 @@ export default function OffrandesClient() {
                 {offer.title}
                 {/* Stock dot */}
                 {offer.stockLeft <= 10 && (
-                  <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                  <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
                 )}
               </button>
             ))}
@@ -537,8 +537,8 @@ export default function OffrandesClient() {
                     <span className="text-[10px] text-text-muted-dark font-heading">/ mouton</span>
                   </div>
                   <div className="flex items-center gap-1.5">
-                    <FlameIcon className="h-2.5 w-2.5 text-red-400" />
-                    <span className="text-[10px] text-red-400 font-heading truncate">
+                    <FlameIcon className="h-2.5 w-2.5 text-amber-400" />
+                    <span className="text-[10px] text-amber-400 font-heading truncate">
                       Plus que {selectedOffer.stockLeft} restants
                     </span>
                   </div>
