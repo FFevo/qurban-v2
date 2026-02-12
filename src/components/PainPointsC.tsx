@@ -53,7 +53,7 @@ export default function PainPointsC() {
           </p>
           <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={isInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: 0.15 }} className="mt-8 flex justify-center">
             <Button asChild className="rounded-full bg-qurban-green hover:bg-qurban-green/90 text-white font-heading text-xs sm:text-sm h-11 sm:h-12 px-6 sm:px-10 cta-shine cta-pulse">
-              <a href="#commander">RESERVER MON SACRIFICE NOMINATIF MAINTENANT</a>
+              <a href="/offrandes">RESERVER MON SACRIFICE NOMINATIF MAINTENANT</a>
             </Button>
           </motion.div>
         </motion.div>
@@ -153,7 +153,7 @@ export default function PainPointsC() {
             className="mt-6 flex justify-center"
           >
             <Button asChild className="rounded-full bg-qurban-green hover:bg-qurban-green/90 text-white font-heading text-xs sm:text-sm h-11 sm:h-12 px-6 sm:px-10 cta-shine cta-pulse">
-              <a href="#commander">RESERVER MON SACRIFICE NOMINATIF MAINTENANT</a>
+              <a href="/offrandes">RESERVER MON SACRIFICE NOMINATIF MAINTENANT</a>
             </Button>
           </motion.div>
         </motion.div>

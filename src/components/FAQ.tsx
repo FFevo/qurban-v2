@@ -96,7 +96,7 @@ export default function FAQ() {
             asChild
             className="rounded-full bg-qurban-green hover:bg-qurban-green/90 text-white font-heading text-xs sm:text-sm h-11 sm:h-12 px-6 sm:px-10 cta-shine cta-pulse whitespace-nowrap"
           >
-            <a href="#commander">RESERVER MON SACRIFICE NOMINATIF MAINTENANT</a>
+            <a href="/offrandes">RESERVER MON SACRIFICE NOMINATIF MAINTENANT</a>
           </Button>
         </motion.div>
       </div>

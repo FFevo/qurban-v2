@@ -123,7 +123,7 @@ export default function Team() {
             asChild
             className="rounded-full bg-qurban-green hover:bg-qurban-green/90 text-white font-heading text-sm sm:text-base h-12 sm:h-14 px-8 sm:px-12 cta-shine cta-pulse"
           >
-            <a href="#commander">COMMANDER MON SACRIFICE</a>
+            <a href="/offrandes">COMMANDER MON SACRIFICE</a>
           </Button>
         </motion.div>
       </div>

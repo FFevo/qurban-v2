@@ -39,7 +39,7 @@ export default function StickyBottomCTA() {
                 asChild
                 className="w-full sm:w-auto rounded-full bg-qurban-green hover:bg-qurban-green/90 text-white font-heading text-sm h-11 px-10 cta-shine shadow-lg shadow-qurban-green/25 border border-gold/15"
               >
-                <a href="#commander">RESERVER MON SACRIFICE MAINTENANT</a>
+                <a href="/offrandes">RESERVER MON SACRIFICE MAINTENANT</a>
               </Button>
             </div>
           </div>

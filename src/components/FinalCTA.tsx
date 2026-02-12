@@ -82,7 +82,7 @@ export default function FinalCTA() {
               asChild
               className="relative rounded-full bg-qurban-green hover:bg-qurban-green/90 text-white font-heading text-sm sm:text-base h-12 sm:h-14 px-8 sm:px-12 cta-shine cta-pulse shadow-2xl shadow-qurban-green/30 border border-gold/20"
             >
-              <a href="#commander">COMMANDER MON SACRIFICE</a>
+              <a href="/offrandes">COMMANDER MON SACRIFICE</a>
             </Button>
           </motion.div>
         </div>
@@ -143,7 +143,7 @@ export default function FinalCTA() {
                   Navigation
                 </h6>
                 <a
-                  href="#commander"
+                  href="/offrandes"
                   className="text-text-light/60 hover:text-gold transition-colors"
                 >
                   Offrandes
