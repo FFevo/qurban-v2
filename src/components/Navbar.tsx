@@ -6,12 +6,15 @@ import Image from "next/image";
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 40);
+      /* Show logo only after scrolling past the hero badge (~400px) */
+      setShowLogo(y > 400);
       if (y > 200 && y > lastScrollY.current) {
         setHidden(true);
       } else {
@@ -25,8 +28,13 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Logo — always sticky, never hides */}
-      <a href="#hero" className="fixed top-4 left-4 sm:left-6 z-[51] flex items-center gap-2">
+      {/* Logo — appears after scrolling past hero */}
+      <a
+        href="#hero"
+        className={`fixed top-4 left-4 sm:left-6 z-[51] flex items-center gap-2 transition-all duration-300 ${
+          showLogo ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
+        }`}
+      >
         <Image
           src="/images/brand/logo.png"
           alt="Qurban"

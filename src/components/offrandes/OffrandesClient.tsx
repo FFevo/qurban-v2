@@ -170,11 +170,13 @@ export default function OffrandesClient() {
   const [modalOffer, setModalOffer] = useState<Offer | null>(null);
   const [stickySelected, setStickySelected] = useState<OfferType>("aid");
   const [navHidden, setNavHidden] = useState(false);
+  const [showLogo, setShowLogo] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
+      setShowLogo(y > 300);
       if (y > 200 && y > lastScrollY.current) {
         setNavHidden(true);
       } else {
@@ -198,8 +200,13 @@ export default function OffrandesClient() {
 
   return (
     <>
-      {/* Logo — always sticky, never hides */}
-      <Link href="/" className="fixed top-3 left-4 sm:left-6 z-[51] flex items-center gap-2">
+      {/* Logo — appears after scrolling past hero badge */}
+      <Link
+        href="/"
+        className={`fixed top-3 left-4 sm:left-6 z-[51] flex items-center gap-2 transition-all duration-300 ${
+          showLogo ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
+        }`}
+      >
         <Image src="/images/brand/logo.png" alt="Qurban" width={28} height={28} />
         <span className="sr-only">Qurban</span>
       </Link>
