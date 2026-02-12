@@ -11,11 +11,13 @@ import Team from "@/components/Team";
 import Founder from "@/components/Founder";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
+import StickyBottomCTA from "@/components/StickyBottomCTA";
 
 export default function Home() {
   return (
     <>
       <Navbar />
+      <StickyBottomCTA />
       <main>
         {/* DARK */}
         <Hero />

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -49,13 +48,8 @@ export default function Navbar() {
           </span>
         </div>
 
-        {/* CTA */}
-        <Button
-          asChild
-          className="rounded-full bg-qurban-green hover:bg-qurban-green/90 text-white font-heading text-xs px-5 h-9 cta-shine"
-        >
-          <a href="#commander">COMMANDER</a>
-        </Button>
+        {/* Spacer on mobile to keep logo left-aligned */}
+        <div className="w-9 md:hidden" />
       </div>
     </nav>
   );

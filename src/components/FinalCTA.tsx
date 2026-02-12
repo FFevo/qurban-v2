@@ -176,7 +176,7 @@ export default function FinalCTA() {
 
           <Separator className="my-8 bg-white/5" />
 
-          <p className="text-center text-xs text-text-muted-dark">
+          <p className="text-center text-xs text-text-muted-dark pb-20">
             &copy; 2026 Qurban. Tous droits reserves.
           </p>
         </div>
