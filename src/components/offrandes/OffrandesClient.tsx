@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -169,6 +169,22 @@ function SpecIcon({ name }: { name: string }) {
 export default function OffrandesClient() {
   const [modalOffer, setModalOffer] = useState<Offer | null>(null);
   const [stickySelected, setStickySelected] = useState<OfferType>("aid");
+  const [navHidden, setNavHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y > 200 && y > lastScrollY.current) {
+        setNavHidden(true);
+      } else {
+        setNavHidden(false);
+      }
+      lastScrollY.current = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const todayLabel = useMemo(() => {
     return new Intl.DateTimeFormat("fr-FR", {
@@ -182,8 +198,12 @@ export default function OffrandesClient() {
 
   return (
     <>
-      {/* ═══ NAVBAR MINI ═══ */}
-      <nav className="sticky top-0 z-50 bg-bg-dark/95 backdrop-blur-xl border-b border-white/[0.06]">
+      {/* ═══ NAVBAR MINI — hides on scroll down ═══ */}
+      <nav
+        className={`sticky top-0 z-50 bg-bg-dark/95 backdrop-blur-xl border-b border-white/[0.06] transition-all duration-500 ${
+          navHidden ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+        }`}
+      >
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <Image src="/images/brand/logo.png" alt="Qurban" width={28} height={28} />
@@ -197,6 +217,25 @@ export default function OffrandesClient() {
           </div>
         </div>
       </nav>
+
+      {/* Floating logo — visible when navbar is hidden */}
+      <div
+        className={`fixed top-3 left-4 sm:left-6 z-50 transition-all duration-300 ${
+          navHidden ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
+        }`}
+      >
+        <Link href="/" className="block">
+          <div className="h-10 w-10 rounded-full bg-bg-dark/80 backdrop-blur-xl border border-white/[0.08] shadow-lg shadow-black/30 flex items-center justify-center">
+            <Image
+              src="/images/brand/logo.png"
+              alt="Qurban"
+              width={28}
+              height={28}
+              className="h-7 w-7"
+            />
+          </div>
+        </Link>
+      </div>
 
       <main className="bg-bg-dark min-h-screen pb-28">
         {/* ═══ HERO BANNER ═══ */}
