@@ -176,7 +176,7 @@ export default function OffrandesClient() {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      setShowLogo(y > 300);
+      setShowLogo(y <= 300);
       if (y > 200 && y > lastScrollY.current) {
         setNavHidden(true);
       } else {

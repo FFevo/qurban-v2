@@ -13,8 +13,8 @@ export default function Navbar() {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 40);
-      /* Show logo only after scrolling past the hero badge (~400px) */
-      setShowLogo(y > 400);
+      /* Logo visible at top, disappears after scrolling past hero badge */
+      setShowLogo(y <= 400);
       if (y > 200 && y > lastScrollY.current) {
         setHidden(true);
       } else {
