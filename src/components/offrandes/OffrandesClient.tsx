@@ -23,6 +23,7 @@ export interface Offer {
   price: number;
   image: string;
   inStock: boolean;
+  stockLeft: number;
   badge?: string;
   features: string[];
   popular?: boolean;
@@ -39,6 +40,7 @@ const offers: Offer[] = [
     price: 199,
     image: "/images/offrandes/sadaqah.png",
     inStock: true,
+    stockLeft: 14,
     features: [
       "Sacrifice en votre nom",
       "Video nominative",
@@ -55,6 +57,7 @@ const offers: Offer[] = [
     price: 199,
     image: "/images/offrandes/aqiqah.jpg",
     inStock: true,
+    stockLeft: 8,
     badge: "A partir de",
     features: [
       "1 mouton (fille) ou 2 moutons (garcon)",
@@ -73,6 +76,7 @@ const offers: Offer[] = [
     price: 199,
     image: "/images/offrandes/aid.png",
     inStock: true,
+    stockLeft: 6,
     popular: true,
     badge: "Aid 2026",
     features: [
@@ -108,6 +112,14 @@ function ShieldIcon() {
   return (
     <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+
+function FlameIcon({ className = "h-3 w-3" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 23c-3.6 0-8-2.4-8-7.7 0-3.6 2.2-6.1 4-8.3.6-.8 1.2-1.5 1.6-2.2.3-.5 1-.6 1.4-.2.1.1.2.3.2.4 0 1.2.6 2.2 1.5 2.8.2-.9.6-1.8 1.1-2.6C15.2 2.5 16.4 1 17 0c.3-.5 1-.6 1.4-.2.2.2.3.4.3.6 0 4.5 3.3 7 3.3 11.3C22 16.3 19.3 23 12 23z" />
     </svg>
   );
 }
@@ -156,15 +168,7 @@ function SpecIcon({ name }: { name: string }) {
 
 export default function OffrandesClient() {
   const [modalOffer, setModalOffer] = useState<Offer | null>(null);
-  const [cart, setCart] = useState<Record<string, number>>({});
-
-  const totalItems = useMemo(() => Object.values(cart).reduce((a, b) => a + b, 0), [cart]);
-  const totalPrice = useMemo(() => {
-    return Object.entries(cart).reduce((sum, [id, qty]) => {
-      const offer = offers.find((o) => o.id === id);
-      return sum + (offer?.price || 0) * qty;
-    }, 0);
-  }, [cart]);
+  const [stickySelected, setStickySelected] = useState<OfferType>("aid");
 
   const todayLabel = useMemo(() => {
     return new Intl.DateTimeFormat("fr-FR", {
@@ -174,13 +178,7 @@ export default function OffrandesClient() {
     }).format(new Date());
   }, []);
 
-  const addToCart = (id: string, qty: number) => {
-    setCart((prev) => ({
-      ...prev,
-      [id]: (prev[id] || 0) + qty,
-    }));
-    setModalOffer(null);
-  };
+  const selectedOffer = offers.find((o) => o.id === stickySelected)!;
 
   return (
     <>
@@ -196,22 +194,11 @@ export default function OffrandesClient() {
             <span className="hidden sm:inline text-text-muted-dark">
               <span className="text-gold font-heading">4.8/5</span> — +3 000 commandes
             </span>
-            {totalItems > 0 && (
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                className="flex items-center gap-2 bg-qurban-green/15 border border-qurban-green/30 rounded-full px-3 py-1"
-              >
-                <span className="text-qurban-green-light font-heading text-xs">
-                  {totalItems} mouton{totalItems > 1 ? "s" : ""} — {totalPrice}€
-                </span>
-              </motion.div>
-            )}
           </div>
         </div>
       </nav>
 
-      <main className="bg-bg-dark min-h-screen">
+      <main className="bg-bg-dark min-h-screen pb-28">
         {/* ═══ HERO BANNER ═══ */}
         <section className="relative py-12 sm:py-16 overflow-hidden">
           {/* Green radial glow */}
@@ -286,7 +273,7 @@ export default function OffrandesClient() {
                     )}
 
                     {/* Stock badge */}
-                    <div className="absolute top-3 right-3 z-10">
+                    <div className="absolute top-3 right-3 z-10 flex flex-col gap-1.5 items-end">
                       <Badge
                         className={`font-heading text-[10px] tracking-wider px-2.5 py-1 ${
                           offer.inStock
@@ -296,6 +283,13 @@ export default function OffrandesClient() {
                       >
                         {offer.inStock ? "En stock" : "Hors stock"}
                       </Badge>
+                      {/* Stock limité badge */}
+                      {offer.inStock && offer.stockLeft <= 15 && (
+                        <Badge className="bg-red-500/90 text-white font-heading text-[10px] tracking-wider px-2.5 py-1 flex items-center gap-1 animate-pulse">
+                          <FlameIcon className="h-3 w-3" />
+                          Plus que {offer.stockLeft} restants
+                        </Badge>
+                      )}
                     </div>
 
                     {/* Image */}
@@ -366,44 +360,6 @@ export default function OffrandesClient() {
                 </motion.div>
               ))}
             </div>
-
-            {/* ═══ UPSELL BANNER ═══ */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="mt-10 rounded-2xl border border-gold/20 bg-gradient-to-r from-gold/[0.06] via-qurban-green/[0.04] to-gold/[0.06] p-6 sm:p-8"
-            >
-              <div className="flex flex-col sm:flex-row items-center gap-5">
-                <div className="flex-1 text-center sm:text-left">
-                  <Badge className="bg-gold/15 text-gold border-gold/30 font-heading text-[10px] tracking-wider mb-3">
-                    OFFRE COMBINEE
-                  </Badge>
-                  <h3 className="font-heading text-xl sm:text-2xl font-bold text-text-light">
-                    Combinez vos sacrifices et multipliez les recompenses
-                  </h3>
-                  <p className="mt-2 text-sm text-text-muted-dark leading-relaxed">
-                    Reservez une Sadaqah + un sacrifice de l&apos;Aid pour maximiser votre impact. Chaque mouton nourrit jusqu&apos;a 15 personnes dans le besoin.
-                  </p>
-                </div>
-                <div className="flex flex-col items-center gap-2 flex-shrink-0">
-                  <div className="text-center">
-                    <span className="block text-3xl font-heading font-bold text-gold">398€</span>
-                    <span className="text-[10px] text-text-muted-dark font-heading tracking-wide">2 MOUTONS</span>
-                  </div>
-                  <Button
-                    onClick={() => {
-                      addToCart("sadaqah", 1);
-                      addToCart("aid", 1);
-                    }}
-                    className="rounded-full bg-gold hover:bg-gold/90 text-bg-dark font-heading text-xs h-10 px-8 cta-shine shadow-lg shadow-gold/15"
-                  >
-                    AJOUTER LES 2
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </section>
 
@@ -507,36 +463,72 @@ export default function OffrandesClient() {
         </section>
       </main>
 
-      {/* ═══ STICKY BOTTOM BAR ═══ */}
-      <AnimatePresence>
-        {totalItems > 0 && (
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-0 left-0 right-0 z-50 bg-bg-dark/95 backdrop-blur-xl border-t border-gold/15 shadow-[0_-4px_30px_rgba(0,0,0,0.4)]"
-          >
-            <div className="mx-auto max-w-lg px-4 py-3 flex items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-heading font-bold text-text-light">
-                  {totalItems} mouton{totalItems > 1 ? "s" : ""} selectionne{totalItems > 1 ? "s" : ""}
-                </p>
-                <p className="text-xs text-gold font-heading">{totalPrice}€ total</p>
+      {/* ═══ STICKY BOTTOM ATC BAR ═══ */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-bg-dark/95 backdrop-blur-xl border-t border-gold/15 shadow-[0_-4px_30px_rgba(0,0,0,0.4)]">
+        <div className="mx-auto max-w-lg px-3 py-3">
+          {/* Offer selector tabs */}
+          <div className="flex rounded-full bg-white/[0.04] border border-white/[0.06] p-0.5 mb-2.5">
+            {offers.map((offer) => (
+              <button
+                key={offer.id}
+                onClick={() => setStickySelected(offer.id)}
+                className={`relative flex-1 rounded-full py-1.5 text-[11px] font-heading tracking-wide transition-all ${
+                  stickySelected === offer.id
+                    ? "bg-qurban-green text-white shadow-md shadow-qurban-green/20"
+                    : "text-text-muted-dark hover:text-text-light"
+                }`}
+              >
+                {offer.title}
+                {/* Stock dot */}
+                {offer.stockLeft <= 10 && (
+                  <span className="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                )}
+              </button>
+            ))}
+          </div>
+
+          {/* Selected offer info + CTA */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={stickySelected}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -5 }}
+              transition={{ duration: 0.15 }}
+              className="flex items-center justify-between gap-3"
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="font-heading text-lg font-bold text-text-light">
+                      {selectedOffer.price}€
+                    </span>
+                    <span className="text-[10px] text-text-muted-dark font-heading">/ mouton</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <FlameIcon className="h-2.5 w-2.5 text-red-400" />
+                    <span className="text-[10px] text-red-400 font-heading truncate">
+                      Plus que {selectedOffer.stockLeft} restants
+                    </span>
+                  </div>
+                </div>
               </div>
-              <Button className="rounded-full bg-gold hover:bg-gold/90 text-bg-dark font-heading text-xs h-10 px-8 cta-shine shadow-lg shadow-gold/20">
-                VALIDER MA COMMANDE
+              <Button
+                onClick={() => setModalOffer(selectedOffer)}
+                className="rounded-full bg-gold hover:bg-gold/90 text-bg-dark font-heading text-xs h-10 px-5 sm:px-8 cta-shine shadow-lg shadow-gold/20 flex-shrink-0"
+              >
+                RESERVER MON SACRIFICE
               </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
 
       {/* ═══ ORDER MODAL ═══ */}
       <OrderModal
         offer={modalOffer}
         onClose={() => setModalOffer(null)}
-        onConfirm={addToCart}
+        onConfirm={() => setModalOffer(null)}
       />
     </>
   );
