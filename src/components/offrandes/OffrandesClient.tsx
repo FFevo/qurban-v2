@@ -198,6 +198,12 @@ export default function OffrandesClient() {
 
   return (
     <>
+      {/* Logo — always sticky, never hides */}
+      <Link href="/" className="fixed top-3 left-4 sm:left-6 z-[51] flex items-center gap-2">
+        <Image src="/images/brand/logo.png" alt="Qurban" width={28} height={28} />
+        <span className="sr-only">Qurban</span>
+      </Link>
+
       {/* ═══ NAVBAR MINI — hides on scroll down ═══ */}
       <nav
         className={`sticky top-0 z-50 bg-bg-dark/95 backdrop-blur-xl border-b border-white/[0.06] transition-all duration-500 ${
@@ -205,10 +211,8 @@ export default function OffrandesClient() {
         }`}
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image src="/images/brand/logo.png" alt="Qurban" width={28} height={28} />
-            <span className="sr-only">Qurban</span>
-          </Link>
+          {/* Spacer for logo area */}
+          <div className="w-7" />
 
           <div className="flex items-center gap-3 text-text-light text-sm">
             <span className="hidden sm:inline text-text-muted-dark">
@@ -217,25 +221,6 @@ export default function OffrandesClient() {
           </div>
         </div>
       </nav>
-
-      {/* Floating logo — visible when navbar is hidden */}
-      <div
-        className={`fixed top-3 left-4 sm:left-6 z-50 transition-all duration-300 ${
-          navHidden ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
-        }`}
-      >
-        <Link href="/" className="block">
-          <div className="h-10 w-10 rounded-full bg-bg-dark/80 backdrop-blur-xl border border-white/[0.08] shadow-lg shadow-black/30 flex items-center justify-center">
-            <Image
-              src="/images/brand/logo.png"
-              alt="Qurban"
-              width={28}
-              height={28}
-              className="h-7 w-7"
-            />
-          </div>
-        </Link>
-      </div>
 
       <main className="bg-bg-dark min-h-screen pb-28">
         {/* ═══ HERO BANNER ═══ */}
